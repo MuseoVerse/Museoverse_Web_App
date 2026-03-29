@@ -80,11 +80,11 @@ export default function Layout() {
           <div className="flex items-center gap-3 px-2">
             <img
               src={profilePhoto}
-              alt="Dr. Ahmed Hassan"
+              alt="Eng. Mohamed Abdelsattar"
               className="w-9 h-9 rounded-full object-cover shrink-0"
             />
             <div className="flex-1 min-w-0">
-              <div className="text-white text-[13px] truncate">Dr. Ahmed Hassan</div>
+              <div className="text-white text-[13px] truncate">Eng. Mohamed Abdelsattar</div>
               <div className="text-[rgba(255,255,255,0.4)] text-[11px]">Museum Director</div>
             </div>
           </div>
