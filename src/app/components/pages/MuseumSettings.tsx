@@ -27,7 +27,7 @@ const settingsSections = [
 
 export default function MuseumSettings() {
   return (
-    <div className="space-y-6 max-w-[1100px]">
+    <div className="w-full max-w-[1400px] space-y-6">
       <div>
         <h1 className="text-[#341701] text-[22px]">Museum Settings</h1>
         <p className="text-[#a89279] text-[13px] mt-0.5">Institutional configuration and account management</p>
