@@ -78,7 +78,19 @@ export default function ExhibitsArtifacts() {
 
       {/* Exhibit Comparison */}
       <div className="bg-white rounded-2xl p-5 border border-[#efe9df]">
-        <h2 className="text-[#341701] text-[15px] mb-4">Exhibit Comparison</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-[#341701] text-[15px]">Exhibit Comparison</h2>
+          <div className="flex gap-4 text-[11px]">
+            <span className="flex items-center gap-1.5 text-[#76593a]">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#c9a84c]" />
+              Scans
+            </span>
+            <span className="flex items-center gap-1.5 text-[#76593a]">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#76593a]" />
+              Story Starts
+            </span>
+          </div>
+        </div>
         <SimpleBarChart
           data={comparisonData}
           xKey="name"

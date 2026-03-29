@@ -70,11 +70,23 @@ export default function VirtualTours() {
       {/* Chart + Mode */}
       <div className="grid grid-cols-3 gap-4">
         <div className="col-span-2 bg-white rounded-2xl p-5 border border-[#efe9df]">
-          <h2 className="text-[#341701] text-[15px] mb-4">Performance by Tour</h2>
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-[#341701] text-[15px]">Performance by Tour</h2>
+            <div className="flex gap-4 text-[11px]">
+              <span className="flex items-center gap-1.5 text-[#76593a]">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#c9a84c]" />
+                Starts
+              </span>
+              <span className="flex items-center gap-1.5 text-[#76593a]">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#76593a]" />
+                Completions
+              </span>
+            </div>
+          </div>
           <SimpleBarChart
             data={tourPerformance}
             xKey="name"
-            height={220}
+            height={320}
             bars={[
               { key: "starts", color: "#c9a84c", label: "Starts" },
               { key: "completions", color: "#76593a", label: "Completions" },

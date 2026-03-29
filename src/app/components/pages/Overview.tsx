@@ -2,6 +2,7 @@ import {
   Users, ScanLine, BookOpen, Globe, MessageCircle, Clock,
   TrendingUp, TrendingDown, ArrowRight, Download, Megaphone, AlertTriangle, Lightbulb
 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const kpis = [
   { label: "MuseoVerse Visitors", value: "48,231", change: "+12.4%", up: true, icon: Users },
@@ -24,9 +25,31 @@ const engagementData = [
 ];
 
 function SimpleLineChart({ data }: { data: typeof engagementData }) {
-  const W = 600;
-  const H = 200;
-  const PAD = { top: 10, right: 10, bottom: 30, left: 45 };
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [chartWidth, setChartWidth] = useState(0);
+
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+
+    const updateWidth = () => {
+      setChartWidth(element.clientWidth);
+    };
+
+    updateWidth();
+
+    const observer = new ResizeObserver(() => {
+      updateWidth();
+    });
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const W = Math.max(chartWidth, 640);
+  const H = 240;
+  const PAD = { top: 12, right: 18, bottom: 34, left: 46 };
   const cw = W - PAD.left - PAD.right;
   const ch = H - PAD.top - PAD.bottom;
 
@@ -43,24 +66,26 @@ function SimpleLineChart({ data }: { data: typeof engagementData }) {
   const yTicks = [0, 1000, 2000, 3000, 4000, 5000];
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-[240px]">
-      {/* Grid lines */}
-      {yTicks.map((t) => (
-        <line key={`grid-${t}`} x1={PAD.left} x2={W - PAD.right} y1={yScale(t)} y2={yScale(t)} stroke="#f0ebe3" strokeWidth={1} />
-      ))}
-      {/* Y axis labels */}
-      {yTicks.map((t) => (
-        <text key={`y-${t}`} x={PAD.left - 6} y={yScale(t) + 3} textAnchor="end" fill="#a89279" fontSize={10}>{t >= 1000 ? `${t / 1000}k` : t}</text>
-      ))}
-      {/* X axis labels */}
-      {data.map((d, i) => (
-        <text key={`x-${d.day}`} x={xScale(i)} y={H - 6} textAnchor="middle" fill="#a89279" fontSize={10}>{d.day}</text>
-      ))}
-      {/* Lines */}
-      <path d={makePath("scans")} fill="none" stroke="#76593a" strokeWidth={2} />
-      <path d={makePath("visitors")} fill="none" stroke="#c9a84c" strokeWidth={2} />
-      <path d={makePath("stories")} fill="none" stroke="#e9c349" strokeWidth={2} strokeDasharray="4 4" />
-    </svg>
+    <div ref={containerRef} className="w-full">
+      <svg viewBox={`0 0 ${W} ${H}`} className="block h-[240px] w-full">
+        {/* Grid lines */}
+        {yTicks.map((t) => (
+          <line key={`grid-${t}`} x1={PAD.left} x2={W - PAD.right} y1={yScale(t)} y2={yScale(t)} stroke="#f0ebe3" strokeWidth={1} />
+        ))}
+        {/* Y axis labels */}
+        {yTicks.map((t) => (
+          <text key={`y-${t}`} x={PAD.left - 6} y={yScale(t) + 3} textAnchor="end" fill="#a89279" fontSize={10}>{t >= 1000 ? `${t / 1000}k` : t}</text>
+        ))}
+        {/* X axis labels */}
+        {data.map((d, i) => (
+          <text key={`x-${d.day}`} x={xScale(i)} y={H - 8} textAnchor="middle" fill="#a89279" fontSize={10}>{d.day}</text>
+        ))}
+        {/* Lines */}
+        <path d={makePath("scans")} fill="none" stroke="#76593a" strokeWidth={2} />
+        <path d={makePath("visitors")} fill="none" stroke="#c9a84c" strokeWidth={2} />
+        <path d={makePath("stories")} fill="none" stroke="#e9c349" strokeWidth={2} strokeDasharray="4 4" />
+      </svg>
+    </div>
   );
 }
 

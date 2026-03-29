@@ -19,10 +19,11 @@ const audienceGeo = [
 ];
 
 const segments = [
-  { name: "Tourists", value: 42, color: "#c9a84c" },
-  { name: "Students", value: 23, color: "#76593a" },
-  { name: "Cultural Enthusiasts", value: 20, color: "#e9c349" },
-  { name: "Remote Visitors", value: 15, color: "#a89279" },
+  { name: "Tourists", value: 36, color: "#c9a84c" },
+  { name: "Students", value: 21, color: "#76593a" },
+  { name: "Cultural Enthusiasts", value: 18, color: "#e9c349" },
+  { name: "Remote Visitors", value: 13, color: "#a89279" },
+  { name: "Other", value: 12, color: "#d8c6ac" },
 ];
 
 const peakHours = [
@@ -77,7 +78,19 @@ export default function VisitorAnalytics() {
       {/* Trend + Segments */}
       <div className="grid grid-cols-3 gap-4">
         <div className="col-span-2 bg-white rounded-2xl p-5 border border-[#efe9df]">
-          <h2 className="text-[#341701] text-[15px] mb-4">New vs Returning Visitors</h2>
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-[#341701] text-[15px]">New vs Returning Visitors</h2>
+            <div className="flex gap-4 text-[11px]">
+              <span className="flex items-center gap-1.5 text-[#76593a]">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#c9a84c]" />
+                New
+              </span>
+              <span className="flex items-center gap-1.5 text-[#76593a]">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#76593a]" />
+                Returning
+              </span>
+            </div>
+          </div>
           <SimpleAreaChart
             data={trendData}
             xKey="week"
@@ -141,11 +154,9 @@ export default function VisitorAnalytics() {
                 style={{ height: `${f.pct * 1.6}px`, opacity: 0.3 + (f.pct / 100) * 0.7 }}
               />
               <div className="text-[#76593a] text-[11px] text-center mt-2 leading-tight">{f.stage}</div>
-              {i < funnel.length - 1 && (
-                <div className="text-[#a89279] text-[10px] mt-1">
-                  {Math.round((funnel[i + 1].value / f.value) * 100)}%
-                </div>
-              )}
+              <div className="mt-1 min-h-[16px] text-[#a89279] text-[10px]">
+                {i < funnel.length - 1 ? `${Math.round((funnel[i + 1].value / f.value) * 100)}%` : ""}
+              </div>
             </div>
           ))}
         </div>

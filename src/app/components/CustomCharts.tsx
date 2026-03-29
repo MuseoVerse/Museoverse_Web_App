@@ -3,6 +3,8 @@
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
+import { useEffect, useRef, useState } from "react";
+
 function niceMax(val: number): number {
   if (val <= 0) return 10;
   const magnitude = Math.pow(10, Math.floor(Math.log10(val)));
@@ -72,9 +74,31 @@ export interface SimpleBarChartProps {
 }
 
 export function SimpleBarChart({ data, xKey, bars, height = 220 }: SimpleBarChartProps) {
-  const W = 520;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [chartWidth, setChartWidth] = useState(0);
+
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+
+    const updateWidth = () => {
+      setChartWidth(element.clientWidth);
+    };
+
+    updateWidth();
+
+    const observer = new ResizeObserver(() => {
+      updateWidth();
+    });
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const W = Math.max(chartWidth, 520);
   const H = height;
-  const PAD = { top: 12, right: 12, bottom: 28, left: 46 };
+  const PAD = { top: 12, right: 18, bottom: 28, left: 46 };
   const cw = W - PAD.left - PAD.right;
   const ch = H - PAD.top - PAD.bottom;
 
@@ -92,58 +116,60 @@ export function SimpleBarChart({ data, xKey, bars, height = 220 }: SimpleBarChar
   const yPos = (val: number) => PAD.top + ch - (val / yMax) * ch;
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height }}>
-      {/* grid */}
-      {yTicks.map((t) => (
-        <line
-          key={`g${t}`}
-          x1={PAD.left}
-          x2={W - PAD.right}
-          y1={yPos(t)}
-          y2={yPos(t)}
-          stroke="#f0ebe3"
-          strokeWidth={1}
-        />
-      ))}
-      {/* y labels */}
-      {yTicks.map((t) => (
-        <text key={`yt${t}`} x={PAD.left - 5} y={yPos(t) + 4} textAnchor="end" fill="#a89279" fontSize={10}>
-          {formatTick(t)}
-        </text>
-      ))}
-      {/* bars */}
-      {data.map((d, di) =>
-        bars.map((b, bi) => {
-          const val = Number(d[b.key] || 0);
-          const bh = Math.max((val / yMax) * ch, 0);
-          return (
-            <rect
-              key={`b${di}-${bi}`}
-              x={gx(di) + bi * barW}
-              y={yPos(val)}
-              width={Math.max(barW - 2, 1)}
-              height={bh}
-              fill={b.color}
-              rx={3}
-              ry={3}
-            />
-          );
-        })
-      )}
-      {/* x labels */}
-      {data.map((d, di) => (
-        <text
-          key={`xl${di}`}
-          x={gx(di) + barGroupW / 2}
-          y={H - 4}
-          textAnchor="middle"
-          fill="#a89279"
-          fontSize={10}
-        >
-          {String(d[xKey])}
-        </text>
-      ))}
-    </svg>
+    <div ref={containerRef} className="w-full">
+      <svg viewBox={`0 0 ${W} ${H}`} className="block w-full" style={{ height }}>
+        {/* grid */}
+        {yTicks.map((t) => (
+          <line
+            key={`g${t}`}
+            x1={PAD.left}
+            x2={W - PAD.right}
+            y1={yPos(t)}
+            y2={yPos(t)}
+            stroke="#f0ebe3"
+            strokeWidth={1}
+          />
+        ))}
+        {/* y labels */}
+        {yTicks.map((t) => (
+          <text key={`yt${t}`} x={PAD.left - 5} y={yPos(t) + 4} textAnchor="end" fill="#a89279" fontSize={10}>
+            {formatTick(t)}
+          </text>
+        ))}
+        {/* bars */}
+        {data.map((d, di) =>
+          bars.map((b, bi) => {
+            const val = Number(d[b.key] || 0);
+            const bh = Math.max((val / yMax) * ch, 0);
+            return (
+              <rect
+                key={`b${di}-${bi}`}
+                x={gx(di) + bi * barW}
+                y={yPos(val)}
+                width={Math.max(barW - 2, 1)}
+                height={bh}
+                fill={b.color}
+                rx={3}
+                ry={3}
+              />
+            );
+          })
+        )}
+        {/* x labels */}
+        {data.map((d, di) => (
+          <text
+            key={`xl${di}`}
+            x={gx(di) + barGroupW / 2}
+            y={H - 4}
+            textAnchor="middle"
+            fill="#a89279"
+            fontSize={10}
+          >
+            {String(d[xKey])}
+          </text>
+        ))}
+      </svg>
+    </div>
   );
 }
 
@@ -165,9 +191,31 @@ export interface SimpleAreaChartProps {
 }
 
 export function SimpleAreaChart({ data, xKey, series, height = 220 }: SimpleAreaChartProps) {
-  const W = 600;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [chartWidth, setChartWidth] = useState(0);
+
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+
+    const updateWidth = () => {
+      setChartWidth(element.clientWidth);
+    };
+
+    updateWidth();
+
+    const observer = new ResizeObserver(() => {
+      updateWidth();
+    });
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const W = Math.max(chartWidth, 640);
   const H = height;
-  const PAD = { top: 12, right: 12, bottom: 28, left: 46 };
+  const PAD = { top: 12, right: 18, bottom: 28, left: 46 };
   const cw = W - PAD.left - PAD.right;
   const ch = H - PAD.top - PAD.bottom;
 
@@ -196,7 +244,8 @@ export function SimpleAreaChart({ data, xKey, series, height = 220 }: SimpleArea
   };
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height }}>
+    <div ref={containerRef} className="w-full">
+      <svg viewBox={`0 0 ${W} ${H}`} className="block w-full" style={{ height }}>
       {/* grid */}
       {yTicks.map((t) => (
         <line
@@ -238,7 +287,8 @@ export function SimpleAreaChart({ data, xKey, series, height = 220 }: SimpleArea
           strokeDasharray={s.dashed ? "4 4" : undefined}
         />
       ))}
-    </svg>
+      </svg>
+    </div>
   );
 }
 

@@ -79,11 +79,27 @@ export default function StorytellingAR() {
       {/* Trend + Story Styles */}
       <div className="grid grid-cols-3 gap-4">
         <div className="col-span-2 bg-white rounded-2xl p-5 border border-[#efe9df]">
-          <h2 className="text-[#341701] text-[15px] mb-4">Scan & Story Trend</h2>
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-[#341701] text-[15px]">Scan & Story Trend</h2>
+            <div className="flex gap-4 text-[11px]">
+              <span className="flex items-center gap-1.5 text-[#76593a]">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#c9a84c]" />
+                Scans
+              </span>
+              <span className="flex items-center gap-1.5 text-[#76593a]">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#76593a]" />
+                Stories
+              </span>
+              <span className="flex items-center gap-1.5 text-[#76593a]">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#e9c349]" />
+                AR
+              </span>
+            </div>
+          </div>
           <SimpleAreaChart
             data={scanTrend}
             xKey="day"
-            height={220}
+            height={280}
             series={[
               { key: "scans", stroke: "#c9a84c", fill: "rgba(201,168,76,0.15)", label: "Scans" },
               { key: "stories", stroke: "#76593a", fill: "rgba(118,89,58,0.1)", label: "Stories" },
