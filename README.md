@@ -20,7 +20,7 @@ It is currently a front-end product UI, not a full data-connected platform.
 
 The app is live at:
 
-- https://museoverse-web-app.vercel.app/
+- https://museoverse-web-app-v2.vercel.app/
 
 ## 📌 Current Status
 
