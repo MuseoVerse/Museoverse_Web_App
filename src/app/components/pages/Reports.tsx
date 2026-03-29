@@ -1,4 +1,7 @@
 import { FileText, Download, Calendar, Clock, Mail } from "lucide-react";
+import { useState } from "react";
+
+import AppDropdown from "../AppDropdown";
 
 const templates = [
   { name: "Executive Summary", description: "High-level overview of museum performance on MuseoVerse", icon: "📊", lastGenerated: "Mar 25, 2026" },
@@ -23,7 +26,11 @@ const scheduledReports = [
   { name: "Quarterly Board Report", frequency: "Every quarter", recipient: "board@gem.gov.eg", nextRun: "Apr 1" },
 ];
 
+const reportRangeOptions = ["Custom Date Range", "Last 7 Days", "Last 30 Days", "Last Quarter", "Year to Date"];
+
 export default function Reports() {
+  const [selectedRange, setSelectedRange] = useState("Custom Date Range");
+
   return (
     <div className="space-y-6 max-w-[1400px]">
       <div className="flex items-center justify-between">
@@ -32,13 +39,11 @@ export default function Reports() {
           <p className="text-[#a89279] text-[13px] mt-0.5">Generate, export, and schedule performance reports</p>
         </div>
         <div className="flex gap-2">
-          <select className="bg-white border border-[#e8e0d4] text-[#76593a] text-[12px] px-3 py-2 rounded-xl">
-            <option>Custom Date Range</option>
-            <option>Last 7 Days</option>
-            <option>Last 30 Days</option>
-            <option>Last Quarter</option>
-            <option>Year to Date</option>
-          </select>
+          <AppDropdown
+            value={selectedRange}
+            options={reportRangeOptions}
+            onValueChange={setSelectedRange}
+          />
           <button className="px-4 py-2 bg-[#341701] text-white text-[12px] rounded-xl hover:bg-[#4a2a10] transition flex items-center gap-1.5">
             <Download className="w-3.5 h-3.5" /> Generate Report
           </button>

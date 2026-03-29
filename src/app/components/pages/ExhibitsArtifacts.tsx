@@ -1,4 +1,7 @@
 import { ArrowRight, TrendingUp, TrendingDown, AlertTriangle, Star } from "lucide-react";
+import { useState } from "react";
+
+import AppDropdown from "../AppDropdown";
 import { SimpleBarChart } from "../CustomCharts";
 
 const topExhibits = [
@@ -38,7 +41,15 @@ const underperforming = [
   { artifact: "Limestone Relief Fragment", hall: "Grand Hall", issue: "1.2 min avg time", action: "Promote in museum feed" },
 ];
 
+const hallFilterOptions = ["All Halls", "Tutankhamun Galleries", "Grand Hall", "Old Kingdom Hall"];
+const eraFilterOptions = ["All Eras", "Old Kingdom", "New Kingdom", "Late Period"];
+const typeFilterOptions = ["All Types", "Sculpture", "Funerary", "Relief"];
+
 export default function ExhibitsArtifacts() {
+  const [selectedHall, setSelectedHall] = useState("All Halls");
+  const [selectedEra, setSelectedEra] = useState("All Eras");
+  const [selectedType, setSelectedType] = useState("All Types");
+
   return (
     <div className="space-y-6 max-w-[1400px]">
       <div className="flex items-center justify-between">
@@ -47,24 +58,21 @@ export default function ExhibitsArtifacts() {
           <p className="text-[#a89279] text-[13px] mt-0.5">Performance across all halls and collections</p>
         </div>
         <div className="flex gap-2">
-          <select className="bg-white border border-[#e8e0d4] text-[#76593a] text-[12px] px-3 py-2 rounded-xl">
-            <option>All Halls</option>
-            <option>Tutankhamun Galleries</option>
-            <option>Grand Hall</option>
-            <option>Old Kingdom Hall</option>
-          </select>
-          <select className="bg-white border border-[#e8e0d4] text-[#76593a] text-[12px] px-3 py-2 rounded-xl">
-            <option>All Eras</option>
-            <option>Old Kingdom</option>
-            <option>New Kingdom</option>
-            <option>Late Period</option>
-          </select>
-          <select className="bg-white border border-[#e8e0d4] text-[#76593a] text-[12px] px-3 py-2 rounded-xl">
-            <option>All Types</option>
-            <option>Sculpture</option>
-            <option>Funerary</option>
-            <option>Relief</option>
-          </select>
+          <AppDropdown
+            value={selectedHall}
+            options={hallFilterOptions}
+            onValueChange={setSelectedHall}
+          />
+          <AppDropdown
+            value={selectedEra}
+            options={eraFilterOptions}
+            onValueChange={setSelectedEra}
+          />
+          <AppDropdown
+            value={selectedType}
+            options={typeFilterOptions}
+            onValueChange={setSelectedType}
+          />
         </div>
       </div>
 

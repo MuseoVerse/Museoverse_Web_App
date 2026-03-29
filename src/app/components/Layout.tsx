@@ -4,15 +4,7 @@ import {
   Globe, Megaphone, FileText, Settings, Bell, Search, ChevronDown, Wifi
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+import AppDropdown from "./AppDropdown";
 import lightLogo from "../../assets/light_logo.png";
 import profilePhoto from "../../assets/9daab04414367d49254977be5b6fb20e0c511e1b.png";
 
@@ -30,59 +22,6 @@ const navItems = [
 
 const periodOptions = ["Last 30 Days", "Last 7 Days", "Last 90 Days", "This Year"];
 const hallOptions = ["All Halls", "Grand Hall", "Tutankhamun Galleries", "Old Kingdom Hall", "New Kingdom Hall"];
-
-function HeaderDropdown({
-  label,
-  value,
-  options,
-  onValueChange,
-  triggerClassName,
-}: {
-  label: string;
-  value: string;
-  options: string[];
-  onValueChange: (value: string) => void;
-  triggerClassName?: string;
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        className={`group min-w-[172px] cursor-pointer rounded-xl border border-[#e4dbcf] bg-[linear-gradient(180deg,#ffffff_0%,#f7f2ea_100%)] px-3 py-1.5 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_10px_24px_rgba(52,23,1,0.05)] transition hover:border-[#d6c7b0] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_14px_28px_rgba(52,23,1,0.08)] data-[state=open]:border-[#c9a84c] data-[state=open]:shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_16px_32px_rgba(52,23,1,0.1)] outline-none ${triggerClassName ?? ""}`}
-      >
-        <div className="flex items-center justify-between gap-3">
-          <div className="min-w-0">
-            <div className="text-[9px] uppercase tracking-[1.4px] text-[#a89279]">{label}</div>
-            <div className="mt-0.5 truncate text-[12px] font-medium text-[#5a4633]">{value}</div>
-          </div>
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/75 text-[#a89279] shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] transition group-hover:text-[#76593a] group-data-[state=open]:bg-[#faf5eb] group-data-[state=open]:text-[#c9a84c]">
-            <ChevronDown className="h-4 w-4 transition duration-200 group-data-[state=open]:rotate-180" />
-          </div>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        sideOffset={10}
-        className="w-[240px] rounded-2xl border border-[#e8e0d4] bg-[#fffdf9] p-2 shadow-[0_20px_48px_rgba(52,23,1,0.14)]"
-      >
-        <DropdownMenuLabel className="px-3 pb-2 pt-1 text-[10px] uppercase tracking-[1.2px] text-[#a89279]">
-          {label}
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator className="bg-[#f1e9dd]" />
-        <DropdownMenuRadioGroup value={value} onValueChange={onValueChange}>
-          {options.map((option) => (
-            <DropdownMenuRadioItem
-              key={option}
-              value={option}
-              className="mt-1 cursor-pointer rounded-xl py-2.5 pl-9 pr-3 text-[13px] text-[#5a4633] focus:bg-[#faf5eb] focus:text-[#341701] data-[state=checked]:bg-[#faf5eb] data-[state=checked]:text-[#341701]"
-            >
-              {option}
-            </DropdownMenuRadioItem>
-          ))}
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
 
 export default function Layout() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -185,13 +124,13 @@ export default function Layout() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <HeaderDropdown
+          <AppDropdown
             label="Date Range"
             value={selectedPeriod}
             options={periodOptions}
             onValueChange={setSelectedPeriod}
           />
-          <HeaderDropdown
+          <AppDropdown
             label="Museum Hall"
             value={selectedHall}
             options={hallOptions}
